@@ -52,7 +52,7 @@ export const profile = {
    * then paste its endpoint here, e.g. 'https://formspree.io/f/abcdwxyz'.
    * While this is '' the form falls back to opening the visitor's mail app.
    */
-  formEndpoint: '',
+  formEndpoint: 'https://formspree.io/f/myeejgek',
   resumeUrl:`${import.meta.env.BASE_URL}resume.pdf`, // drop your resume.pdf into the /public folder
   socials: [
     {
