@@ -1,0 +1,83 @@
+.codeCard {
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0d1526;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: var(--shadow);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.codeCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.codeCard__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.codeCard__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.codeCard__dot--r { background: #ff5f57; }
+.codeCard__dot--y { background: #febc2e; }
+.codeCard__dot--g { background: #28c840; }
+
+.codeCard__file {
+  margin-left: 9px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #7e8fa8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codeCard__body {
+  margin: 0;
+  padding: 15px 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+
+.codeCard__line {
+  display: flex;
+  gap: 13px;
+  padding-inline: 16px;
+  white-space: pre;
+}
+
+.codeCard__line:hover { background: rgba(255, 255, 255, 0.03); }
+
+.codeCard__ln {
+  color: #3d4d66;
+  user-select: none;
+  min-width: 11px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.codeCard__body code { color: #c9d6ea; }
+
+/* Java token colours */
+.tok-kw { color: #ff7b72; }
+.tok-type { color: #79c0ff; }
+.tok-anno { color: #d2a8ff; }
+.tok-str { color: #a5d6ff; }
+.tok-fn { color: #ffa657; }
+
+@media (max-width: 520px) {
+  .codeCard__body { font-size: 0.71rem; }
+}
