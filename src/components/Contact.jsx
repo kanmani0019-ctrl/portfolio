@@ -9,6 +9,7 @@ export default function Contact() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
 
   const update = (e) => {
     const { name, value } = e.target
@@ -25,23 +26,45 @@ export default function Contact() {
     return Object.keys(next).length === 0
   }
 
+  const done = () => {
+    setSent('ok')
+    setForm(EMPTY)
+    setTimeout(() => setSent(false), 6000)
+  }
+
   /**
-   * Opens the visitor's mail client with the message pre-filled.
-   * Swap this for a fetch() to Formspree/EmailJS/your API when you have one.
+   * Posts to Formspree when `profile.formEndpoint` is set, so the message
+   * lands straight in the inbox. Otherwise falls back to the visitor's mail app.
    */
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
     if (!validate()) return
 
-    const subject = encodeURIComponent(form.subject || `Portfolio enquiry from ${form.name}`)
-    const body = encodeURIComponent(
-      `${form.message}\n\n—\n${form.name}\n${form.email}`
-    )
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+    const subject = form.subject || `Portfolio enquiry from ${form.name}`
 
-    setSent(true)
-    setForm(EMPTY)
-    setTimeout(() => setSent(false), 6000)
+    if (!profile.formEndpoint) {
+      const body = encodeURIComponent(`${form.message}\n\n—\n${form.name}\n${form.email}`)
+      window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${body}`
+      setSent('mailto')
+      setForm(EMPTY)
+      setTimeout(() => setSent(false), 6000)
+      return
+    }
+
+    setSending(true)
+    try {
+      const res = await fetch(profile.formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ ...form, subject, _replyto: form.email }),
+      })
+      if (!res.ok) throw new Error('send failed')
+      done()
+    } catch {
+      setSent('error')
+    } finally {
+      setSending(false)
+    }
   }
 
   const details = [
@@ -164,15 +187,26 @@ export default function Contact() {
               {errors.message && <small className="field__error">{errors.message}</small>}
             </div>
 
-            <button type="submit" className="btn btn--primary contact__submit">
-              Send message
+            <button type="submit" className="btn btn--primary contact__submit" disabled={sending}>
+              {sending ? 'Sending…' : 'Send message'}
               <Icon name="arrowRight" size={18} />
             </button>
 
-            {sent && (
+            {sent === 'ok' && (
+              <p className="contact__sent" role="status">
+                <Icon name="check" size={16} />
+                Thanks! Your message was sent — I will reply soon.
+              </p>
+            )}
+            {sent === 'mailto' && (
               <p className="contact__sent" role="status">
                 <Icon name="check" size={16} />
                 Your mail client should be open — hit send and it lands in my inbox.
+              </p>
+            )}
+            {sent === 'error' && (
+              <p className="contact__sent" role="alert">
+                Sorry, that did not go through. Please email {profile.email} directly.
               </p>
             )}
           </form>

@@ -47,7 +47,13 @@ export const profile = {
   availability: 'Open to Java Backend Opportunities',
   email: 'kanmanisenthil19@gmail.com',
   phone: '+91 92424 37282',
-  resumeUrl: `${import.meta.env.BASE_URL}resume.pdf`, // drop your resume.pdf into the /public folder
+  /**
+   * Contact form delivery via Formspree (free). Create a form at formspree.io,
+   * then paste its endpoint here, e.g. 'https://formspree.io/f/abcdwxyz'.
+   * While this is '' the form falls back to opening the visitor's mail app.
+   */
+  formEndpoint: '',
+  resumeUrl:`${import.meta.env.BASE_URL}resume.pdf`, // drop your resume.pdf into the /public folder
   socials: [
     {
       label: 'LinkedIn',
