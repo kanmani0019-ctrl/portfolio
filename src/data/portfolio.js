@@ -39,7 +39,7 @@ export const profile = {
    * exactly or the image 404s once deployed.
    * Set to '' to show the initials monogram instead.
    */
-  photo: '/Kanmani.jpg',
+  photo: `${import.meta.env.BASE_URL}Kanmani.jpg`,
   /** Caption strip under the hero photo. */
   photoCaption: 'Chennai, India · Backend engineering',
 
@@ -47,7 +47,7 @@ export const profile = {
   availability: 'Open to Java Backend Opportunities',
   email: 'kanmanisenthil19@gmail.com',
   phone: '+91 92424 37282',
-  resumeUrl: '/resume.pdf', // drop your resume.pdf into the /public folder
+  resumeUrl: `${import.meta.env.BASE_URL}resume.pdf`, // drop your resume.pdf into the /public folder
   socials: [
     {
       label: 'LinkedIn',
